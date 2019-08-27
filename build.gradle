@@ -6,7 +6,7 @@ plugins {
 //    id 'org.openjfx.javafxplugin' version'0.0.7'
 }
 
-group 'duke'
+group 'seedu.duke'
 version '0.1.0'
 
 repositories {
@@ -38,9 +38,9 @@ application {
     mainClassName = "Duke"
 }
 
-//run {
-//    standardInput = System.in
-//}
+run {
+    standardInput = System.in
+}
 
 test {
     useJUnitPlatform()
