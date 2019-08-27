@@ -2,7 +2,8 @@ import java.util.Scanner;
 
 
 public class Duke {
-
+    private static Task[] dukeList = new Task[100];
+    private static int tasknumber = 0;
 
     public static void main(String[] args) {
         String logo = " ____        _        \n"
@@ -31,10 +32,19 @@ public class Duke {
             }
             if (in.equals("list")) {
                 System.out.println("__________________________________________________\n");
-                System.out.println("   list\n");
+                for (int i = 1; dukeList[i-1] != null; i++) {
+                    System.out.println(i + "." + dukeList[i-1].isString() + "\n");
+                }
                 System.out.println("__________________________________________________\n");
             }
 
+            // other commands like "read book" to be added in the list
+            else {
+                System.out.println("__________________________________________________\n");
+                System.out.println("   added: " + in + "\n");
+                System.out.println("__________________________________________________\n");
+                dukeList[tasknumber].description = in;
+            }
         }
     }
 }
