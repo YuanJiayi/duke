@@ -33,7 +33,7 @@ public class Duke {
             if (in.equals("list")) {
                 System.out.println("__________________________________________________\n");
                 for (int i = 1; dukeList[i-1] != null; i++) {
-                    System.out.println(i + "." + dukeList[i-1].isString() + "\n");
+                    System.out.println(i + "." + dukeList[i-1].toString() + "\n");
                 }
                 System.out.println("__________________________________________________\n");
             }
@@ -50,10 +50,39 @@ public class Duke {
 
             // other commands like "read book" to be added in the list
             else {
-                System.out.println("__________________________________________________\n");
-                System.out.println("   added: " + in + "\n");
-                System.out.println("__________________________________________________\n");
-                dukeList[tasknumber].description = in;
+                String[] keyword = in.split(" ");
+                switch (keyword[0]) {
+                    case "todo": {
+                        Task task = new ToDo (in.replaceFirst("todo ", ""));
+                        dukeList[tasknumber++] = task;
+                        System.out.println("__________________________________________________\n");
+                        System.out.println("   Got it. I've added this task: \n");
+                        System.out.println("   " + dukeList[tasknumber-1].toString() + "\n");
+                        System.out.println(" Now you have " + tasknumber + " tasks in the list.\n");
+                        System.out.println("__________________________________________________\n");
+                        break;
+                    }
+                    case "event": {
+                        Task task = new Event (in.replaceFirst("event", ""), in.replaceFirst("/at ", "(at: "));
+                        dukeList[tasknumber++] = task;
+                        System.out.println("__________________________________________________\n");
+                        System.out.println("   Got it. I've added this task: \n");
+                        System.out.println("   " + dukeList[tasknumber-1].toString() + "\n");
+                        System.out.println(" Now you have " + tasknumber + " tasks in the list.\n");
+                        System.out.println("__________________________________________________\n");
+                        break;
+                    }
+                    case "deadline": {
+                        Task task = new Deadline(in.replaceFirst("deadline ", ""), in.replaceFirst("/by ", "(by: "));
+                        dukeList[tasknumber++] = task;
+                        System.out.println("__________________________________________________\n");
+                        System.out.println("   Got it. I've added this task: \n");
+                        System.out.println("   " + dukeList[tasknumber-1].toString() + "\n");
+                        System.out.println(" Now you have " + tasknumber + " tasks in the list.\n");
+                        System.out.println("__________________________________________________\n");
+                        break;
+                    }
+                }
             }
         }
     }
