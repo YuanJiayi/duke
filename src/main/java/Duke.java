@@ -38,6 +38,16 @@ public class Duke {
                 System.out.println("__________________________________________________\n");
             }
 
+            else if (in.contains("done")) {
+                String temp = in.replaceAll("[^0-9]", "");
+                int number = Integer.parseInt(temp);
+                dukeList[number - 1].markAsDone();
+                System.out.println("__________________________________________________\n");
+                System.out.println("Nice! I've marked this task as done:\n");
+                System.out.println("[✓]" + dukeList[number - 1].description + "\n");
+                System.out.println("__________________________________________________\n");
+            }
+
             // other commands like "read book" to be added in the list
             else {
                 System.out.println("__________________________________________________\n");

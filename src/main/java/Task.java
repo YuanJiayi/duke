@@ -16,6 +16,6 @@ public class Task {
     }
 
     public String isString() {
-        return getStatusIcon() + " " + description;
+        return getStatusIcon() + " " + description; // final content of list with Icon
     }
 }
