@@ -28,7 +28,7 @@ public class Duke {
         UpdateSave updateSave = new UpdateSave();
         dukeList = updateSave.requestData();
         taskNumber = updateSave.requestTasksAmount();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HHmm");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm a");
 
         Scanner sc = new Scanner(System.in);
         while (sc.hasNextLine()) {
