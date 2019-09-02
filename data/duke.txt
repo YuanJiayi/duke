@@ -1,6 +1,5 @@
 T | 1 | read book
 E | 0 | 2271 lab | Wednesday
 T | 0 | attend 2271 tutorial
-E | 0 |  2101 op1  | 02/09/2019 1000
 D | 0 | 1201 vocab quiz  | 21/09/2019 2359
-T | 0 | borrow book
+T | 0 | what to do

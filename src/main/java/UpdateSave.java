@@ -1,8 +1,9 @@
 import java.io.*;
+import java.util.ArrayList;
 
 public class UpdateSave {
-    private static Task[] dukeList = new Task[100];
-    private static int taskNumber = 0;
+    private static ArrayList<Task> dukeList = new ArrayList<>();
+    private static int Number = 0;
 
     public UpdateSave() throws IOException, DukeExceptions {
         try {
@@ -37,7 +38,8 @@ public class UpdateSave {
                 if (info[1].equals("1")) {
                     task.markAsDone();
                 }
-                dukeList[taskNumber++] = task;
+                dukeList.add(task);
+                Number++;
             }
             bufferedReader.close();
         }
@@ -46,7 +48,7 @@ public class UpdateSave {
         }
     }
 
-    public void requestWrite(Task[] taskList) throws IOException {
+    public void requestWrite(ArrayList<Task> taskList) throws IOException {
         try {
             FileWriter fileWriter = new FileWriter("data/duke.txt");
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -80,11 +82,11 @@ public class UpdateSave {
         }
     }
 
-    public Task[] requestData() {
+    public ArrayList<Task> requestData() {
         return dukeList;
     }
 
     public int requestTasksAmount() {
-        return taskNumber;
+        return Number;
     }
 }

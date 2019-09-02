@@ -3,11 +3,10 @@ import java.util.Scanner;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
 
 
 public class Duke {
-    private static Task[] dukeList = new Task[100];
-    private static int taskNumber = 0;
 
     public static void main(String[] args) throws IOException, DukeExceptions {
         String logo = " ____        _        \n"
@@ -24,11 +23,10 @@ public class Duke {
                 + greet
                 + "__________________________________________________\n");
 
-
         UpdateSave updateSave = new UpdateSave();
-        dukeList = updateSave.requestData();
-        taskNumber = updateSave.requestTasksAmount();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm a");
+        ArrayList<Task> dukelist = updateSave.requestData();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
 
         Scanner sc = new Scanner(System.in);
         while (sc.hasNextLine()) {
@@ -40,20 +38,33 @@ public class Duke {
                 break;
             }
             if (in.equals("list")) {
+                int i = 1;
                 System.out.println("__________________________________________________\n");
-                for (int i = 1; dukeList[i-1] != null; i++) {
-                    System.out.println("   " + i + "." + dukeList[i-1].toString() + "\n");
+                for (Task task : dukelist) {
+                    System.out.println("   " + i++ + "." + task.toString() + "\n");
                 }
                 System.out.println("__________________________________________________\n");
             }
             else if (in.contains("done")) {
                 String temp = in.replaceAll("[^0-9]", "");
                 int number = Integer.parseInt(temp);
-                dukeList[number - 1].markAsDone();
+                dukelist.get(number - 1).markAsDone();
                 System.out.println("__________________________________________________\n");
                 System.out.println("   Nice! I've marked this task as done:\n");
-                System.out.println("   [✓] " + dukeList[number - 1].description + "\n");
+                System.out.println("   [✓] " + dukelist.get(number - 1).description + "\n");
                 System.out.println("__________________________________________________\n");
+            }
+            else if (in.contains("delete")) {
+                String temp = in.replaceAll("[^0-9]", "");
+                int number = Integer.parseInt(temp);
+                updateSave.requestWrite(dukelist);
+
+                System.out.println("__________________________________________________\n");
+                System.out.println("   Noted. I've removed this task:\n");
+                System.out.println("   " + dukelist.get(number - 1).toString() + "\n");
+                System.out.println("   Now you have " + (dukelist.size() - 1) + " tasks in the list.\n");
+                System.out.println("__________________________________________________\n");
+                dukelist.remove(number - 1);
             }
 
             // other commands like "read book" to be added in the list
@@ -70,7 +81,7 @@ public class Duke {
                                 throw new DukeExceptions("   \u2639 OOPS!!! The description of a todo cannot be empty.\n");
                             }
                             Task task = new ToDo(in.replaceFirst("todo ", ""));
-                            dukeList[taskNumber++] = task;
+                            dukelist.add(task);
                             break;
                         }
                         case "event": {
@@ -82,7 +93,7 @@ public class Duke {
                             String formatDate = simpleDateFormat.format(date);
 
                             Task task = new Event(getDate[0].replaceFirst("event", ""), formatDate);
-                            dukeList[taskNumber++] = task;
+                            dukelist.add(task);
                             break;
                         }
                         case "deadline": {
@@ -94,15 +105,15 @@ public class Duke {
                             String formatDate = simpleDateFormat.format(date);
 
                             Task task = new Deadline(getDate[0].replaceFirst("deadline ", ""), formatDate);
-                            dukeList[taskNumber++] = task;
+                            dukelist.add(task);
                             break;
                         }
                     }
-                    updateSave.requestWrite(dukeList);
+                    updateSave.requestWrite(dukelist);
                     System.out.println("__________________________________________________\n");
                     System.out.println("   Got it. I've added this task: \n");
-                    System.out.println("   " + dukeList[taskNumber - 1].toString() + "\n");
-                    System.out.println("   Now you have " + taskNumber + " tasks in the list.\n");
+                    System.out.println("   " + dukelist.get(dukelist.size() - 1).toString() + "\n");
+                    System.out.println("   Now you have " + dukelist.size() + " tasks in the list.\n");
                     System.out.println("__________________________________________________\n");
                 }
                 catch (DukeExceptions | ParseException ex) {
