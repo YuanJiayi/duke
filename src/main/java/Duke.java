@@ -66,6 +66,17 @@ public class Duke {
                 System.out.println("__________________________________________________\n");
                 dukelist.remove(number - 1);
             }
+            else if (in.contains("find")) {
+                int i = 1;
+                String keyword = in.split(" ")[1];
+                System.out.println("__________________________________________________\n");
+                for (Task task : dukelist) {
+                    if (task.description.contains(keyword)) {
+                        System.out.println("   " + i++ + "." + task.toString() + "\n");
+                    }
+                }
+                System.out.println("__________________________________________________\n");
+            }
 
             // other commands like "read book" to be added in the list
             else {
