@@ -1,15 +1,30 @@
+import java.text.ParseException;
+import java.util.Date;
+
 public class Deadline extends Task {
 
     protected String by;
+    protected String d;
 
-    public Deadline (String description, String by) {
+    public Deadline (String description) {
         super (description);
-        this.by = by;
-        super.type = "D";
+        String[] keywords = description.split("/by ");
+        this.by = keywords[1];
+        this.type = "D";
+        this.d = keywords[0];
     }
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + by + ")";
+        Date date = null;
+        try {
+            date = super.getDate(this.by);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (date != null) {
+            return "[D]" + super.toString() + d + " (by: " + date + ")";
+        }
+        else return "[D]" + super.toString() + d + " (by: " + by + ")";
     }
 }

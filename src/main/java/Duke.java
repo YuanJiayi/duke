@@ -1,136 +1,67 @@
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.Date;
-import java.text.SimpleDateFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
-
 
 public class Duke {
+    private ListOfTask tasks;
+    private Parser parser;
 
-    public static void main(String[] args) throws IOException, DukeExceptions {
-        String logo = " ____        _        \n"
-                + "|  _ \\ _   _| | _____ \n"
-                + "| | | | | | | |/ / _ \\\n"
-                + "| |_| | |_| |   <  __/\n"
-                + "|____/ \\__,_|_|\\_\\___|\n";
+    public Duke() {}
 
-        String greet = "   Hello! I'm Duke\n"
-                + "   What can I do for you?\n";
+    public static void main (String[] args) throws IOException {
+        new Duke().run();
+    }
 
-        System.out.println("Hello from\n" + logo
-                + "__________________________________________________\n"
-                + greet
-                + "__________________________________________________\n");
+    public void run() throws IOException {
+        tasks = new ListOfTask();
+        parser = new Parser();
+        DukeExceptions exceptions = new DukeExceptions();
 
-        UpdateSave updateSave = new UpdateSave();
-        ArrayList<Task> dukelist = updateSave.requestData();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        UI.Start();
+        int count = Storage.LoadTask(tasks, 0);
 
+        Scanner in = new Scanner(System.in);
+        while (in.hasNextLine()) {
+            String input = in.nextLine();
+            Command command = parser.parse(input);
 
-        Scanner sc = new Scanner(System.in);
-        while (sc.hasNextLine()) {
-            String in = sc.nextLine();
-            if (in.equals("bye")) {
-                System.out.println("__________________________________________________\n"
-                + "   Bye. Hope to see you again soon!\n"
-                + "__________________________________________________\n");
-                break;
+            switch (command.cmdType) {
+                case "bye":
+                    UI.UiBye();
+                    System.exit(0);
+                case "list":
+                    UI.UiList(tasks, count);
+                    break;
+                case "done":
+                    UI.UiDone(tasks.done(command.index));
+                    break;
+                case "delete":
+                    tasks.delete(command.index, count);
+                    count--;
+                    break;
+                case "find":
+                    tasks.find(command.description);
+                    break;
+                case "todo":
+                    tasks.add(new ToDo(command.description));
+                    UI.UiTodo(tasks.get(tasks.size() - 1), count);
+                    count++;
+                    break;
+                case "event":
+                    tasks.add(new Event(command.description));
+                    UI.UiEvent(tasks.get(tasks.size() - 1), count);
+                    count++;
+                    break;
+                case "deadline":
+                    tasks.add(new Deadline(command.description));
+                    UI.UiDeadline(tasks.get(tasks.size() - 1), count);
+                    count++;
+                    break;
+                default:
+                    exceptions.InvalidInput();
+                    break;
             }
-            if (in.equals("list")) {
-                int i = 1;
-                System.out.println("__________________________________________________\n");
-                for (Task task : dukelist) {
-                    System.out.println("   " + i++ + "." + task.toString() + "\n");
-                }
-                System.out.println("__________________________________________________\n");
-            }
-            else if (in.contains("done")) {
-                String temp = in.replaceAll("[^0-9]", "");
-                int number = Integer.parseInt(temp);
-                dukelist.get(number - 1).markAsDone();
-                System.out.println("__________________________________________________\n");
-                System.out.println("   Nice! I've marked this task as done:\n");
-                System.out.println("   [✓] " + dukelist.get(number - 1).description + "\n");
-                System.out.println("__________________________________________________\n");
-            }
-            else if (in.contains("delete")) {
-                String temp = in.replaceAll("[^0-9]", "");
-                int number = Integer.parseInt(temp);
-                updateSave.requestWrite(dukelist);
-
-                System.out.println("__________________________________________________\n");
-                System.out.println("   Noted. I've removed this task:\n");
-                System.out.println("   " + dukelist.get(number - 1).toString() + "\n");
-                System.out.println("   Now you have " + (dukelist.size() - 1) + " tasks in the list.\n");
-                System.out.println("__________________________________________________\n");
-                dukelist.remove(number - 1);
-            }
-            else if (in.contains("find")) {
-                int i = 1;
-                String keyword = in.split(" ")[1];
-                System.out.println("__________________________________________________\n");
-                for (Task task : dukelist) {
-                    if (task.description.contains(keyword)) {
-                        System.out.println("   " + i++ + "." + task.toString() + "\n");
-                    }
-                }
-                System.out.println("__________________________________________________\n");
-            }
-
-            // other commands like "read book" to be added in the list
-            else {
-                try {
-                    String[] keyword = in.split(" ");
-                    if (!(keyword[0].equals("todo") || keyword[0].equals("event") || keyword[0].equals("deadline"))) {
-                        throw new DukeExceptions("   \u2639 OOPS!!! I'm sorry, but I don't know what that means :-(\n");
-                    }
-
-                    switch (keyword[0]) {
-                        case "todo": {
-                            if (in.equals("todo")) {
-                                throw new DukeExceptions("   \u2639 OOPS!!! The description of a todo cannot be empty.\n");
-                            }
-                            Task task = new ToDo(in.replaceFirst("todo ", ""));
-                            dukelist.add(task);
-                            break;
-                        }
-                        case "event": {
-                            if (in.equals("event")) {
-                                throw new DukeExceptions("   \u2639 OOPS!!! The description of an event cannot be empty.\n");
-                            }
-                            String[] getDate = in.split("/at ");
-                            Date date = simpleDateFormat.parse(getDate[getDate.length-1]);
-                            String formatDate = simpleDateFormat.format(date);
-
-                            Task task = new Event(getDate[0].replaceFirst("event", ""), formatDate);
-                            dukelist.add(task);
-                            break;
-                        }
-                        case "deadline": {
-                            if (in.equals("deadline")) {
-                                throw new DukeExceptions("   \u2639 OOPS!!! The description of a deadline cannot be empty.\n");
-                            }
-                            String[] getDate = in.split("/by ");
-                            Date date = simpleDateFormat.parse(getDate[getDate.length-1]);
-                            String formatDate = simpleDateFormat.format(date);
-
-                            Task task = new Deadline(getDate[0].replaceFirst("deadline ", ""), formatDate);
-                            dukelist.add(task);
-                            break;
-                        }
-                    }
-                    updateSave.requestWrite(dukelist);
-                    System.out.println("__________________________________________________\n");
-                    System.out.println("   Got it. I've added this task: \n");
-                    System.out.println("   " + dukelist.get(dukelist.size() - 1).toString() + "\n");
-                    System.out.println("   Now you have " + dukelist.size() + " tasks in the list.\n");
-                    System.out.println("__________________________________________________\n");
-                }
-                catch (DukeExceptions | ParseException ex) {
-                    ex.printStackTrace();
-                }
-            }
+            Storage.saveTask(tasks, count);
         }
     }
 }

@@ -1,14 +1,29 @@
+import java.text.ParseException;
+import java.util.Date;
+
 public class Event extends Task {
     protected String at;
+    protected String d;
 
-    public Event (String description, String at) {
+    public Event (String description) {
         super(description);
-        this.at = at;
-        super.type = "E";
+        String[] keywords = description.split("/at ");
+        this.at = keywords[1];
+        this.type = "E";
+        this.d = keywords[0];
     }
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (at: " + at + ")";
+        Date date = null;
+        try {
+            date = super.getDate(this.at);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (date != null) {
+            return "[E]" + super.toString() + d + " (at: " + date + ")";
+        }
+        else return "[E]" + super.toString() + d + " (at: " + at + ")";
     }
 }
