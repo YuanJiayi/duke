@@ -1,0 +1,5 @@
+event a /at 05/09/2019
+list
+done 1
+delete 1
+bye
