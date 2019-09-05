@@ -18,18 +18,28 @@ public class Parser {
         }
 
         else if (input.length() > 3 && input.substring(0, 4).equals("done")) {
-            command.cmdType = "done";
-            command.index = Integer.parseInt(input.substring(5)) - 1;
+            if (input.length() == 4) {
+                exceptions.EmptyDescription("done");
+            }
+            else {
+                command.cmdType = "done";
+                command.index = Integer.parseInt(input.substring(5)) - 1;
+            }
         }
 
         else if (input.length() > 5 && input.substring(0, 6).equals("delete")) {
-            command.cmdType = "delete";
-            command.index = Integer.parseInt(input.substring(7)) - 1;
+            if (input.length() == 6) {
+                exceptions.EmptyDescription("delete");
+            }
+            else {
+                command.cmdType = "delete";
+                command.index = Integer.parseInt(input.substring(7)) - 1;
+            }
         }
 
         else if (input.length() > 3 && input.substring(0, 4).equals("find")) {
             if (input.length() == 4) {
-                this.exceptions.EmptyDescription("find");
+                exceptions.EmptyDescription("find");
             }
             else {
                 command.cmdType = "find";
@@ -67,7 +77,7 @@ public class Parser {
             }
         }
         else {
-            command.cmdType = "";
+            command.cmdType = "InvalidInput";
         }
         return command;
     }

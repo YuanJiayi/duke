@@ -26,9 +26,11 @@ public class ListOfTask {
     }
 
     public void find (String findInfo) {
+        int countFind = 0;
         for (int No = 1; No <= tasks.size(); No++) {
             if (tasks.get(No - 1).description.contains(findInfo)) {
-                System.out.println("   " + No + ". " + tasks.get(No - 1).toString() + "\n");
+                countFind++;
+                System.out.println("   " + countFind + ". " + tasks.get(No - 1).toString() + "\n");
             }
         }
     }

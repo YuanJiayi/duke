@@ -57,9 +57,8 @@ public class Duke {
                     UI.UiDeadline(tasks.get(tasks.size() - 1), count);
                     count++;
                     break;
-                default:
+                case "InvalidInput":
                     exceptions.InvalidInput();
-                    break;
             }
             Storage.saveTask(tasks, count);
         }
