@@ -1,6 +1,10 @@
+import Tasks.Deadline;
+import Tasks.Event;
+import Tasks.ListOfTask;
+import Tasks.ToDo;
+
 import java.io.IOException;
 import java.util.Scanner;
-import java.text.ParseException;
 
 public class Duke {
     private ListOfTask tasks;
@@ -36,7 +40,8 @@ public class Duke {
                     UI.UiDone(tasks.done(command.index));
                     break;
                 case "delete":
-                    tasks.delete(command.index, count);
+                    UI.UiDelete(tasks.get(command.index), count);
+                    tasks.delete(command.index);
                     count--;
                     break;
                 case "find":

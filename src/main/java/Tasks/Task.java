@@ -1,12 +1,14 @@
+package Tasks;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Task {
-    protected boolean isDone;
-    protected String description;
-    protected String type;
+    public boolean isDone;
+    public String description;
+    public String type;
 
     public Task (String description) {
         this.description = description;

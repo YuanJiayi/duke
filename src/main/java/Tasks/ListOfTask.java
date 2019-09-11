@@ -1,3 +1,5 @@
+package Tasks;
+
 import java.util.ArrayList;
 
 public class ListOfTask {
@@ -20,8 +22,7 @@ public class ListOfTask {
         return tasks.get(index);
     }
 
-    public void delete (int index, int count) {
-        UI.UiDelete(tasks.get(index), count);
+    public void delete (int index) {
         tasks.remove(index);
     }
 

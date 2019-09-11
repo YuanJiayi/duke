@@ -1,9 +1,11 @@
+package Tasks;
+
 import java.text.ParseException;
 import java.util.Date;
 
 public class Event extends Task {
-    protected String at;
-    protected String d;
+    public String at;
+    private String d;
 
     public Event (String description) {
         super(description);

@@ -1,10 +1,12 @@
+package Tasks;
+
 import java.text.ParseException;
 import java.util.Date;
 
 public class Deadline extends Task {
 
-    protected String by;
-    protected String d;
+    public String by;
+    private String d;
 
     public Deadline (String description) {
         super (description);
