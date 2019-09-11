@@ -1,12 +1,23 @@
+/**
+ * The class to classify the type of commands and the validity of commands
+ */
 public class Parser {
     public Command command;
     private DukeExceptions exceptions;
 
+    /**
+     * Initialization for variables in Parser
+     */
     public Parser() {
         this.command = new Command();
         this.exceptions = new DukeExceptions();
     }
 
+    /**
+     * The method for analyzing command and classifying the type of commands
+     * @param input
+     * @return Return the input command information
+     */
     public Command parse(String input) {
 
         if (input.equals("list")) {

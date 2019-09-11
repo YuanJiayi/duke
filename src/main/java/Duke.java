@@ -6,16 +6,28 @@ import Tasks.ToDo;
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * The overall control of Duke. Handle the process flow.
+ */
 public class Duke {
     private ListOfTask tasks;
     private Parser parser;
 
     public Duke() {}
 
+    /**
+     * Call duke to run
+     * @param args
+     * @throws IOException
+     */
     public static void main (String[] args) throws IOException {
         new Duke().run();
     }
 
+    /**
+     * Run the overall program
+     * @throws IOException
+     */
     public void run() throws IOException {
         tasks = new ListOfTask();
         parser = new Parser();

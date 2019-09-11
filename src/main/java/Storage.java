@@ -6,8 +6,17 @@ import Tasks.ToDo;
 import java.io.*;
 import java.util.Scanner;
 
+/**
+ * The class to write and read the file that is saved on local disk
+ */
 public class Storage {
 
+    /**
+     * The method for writing the data file
+     * @param tasks
+     * @param count
+     * @throws IOException
+     */
     public static void saveTask(ListOfTask tasks, int count) throws IOException {
         FileWriter fileWriter = new FileWriter("data/duke.txt");
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -39,6 +48,13 @@ public class Storage {
         bufferedWriter.close();
     }
 
+    /**
+     * Read in the current data
+     * @param tasks
+     * @param count
+     * @return Return the number of tasks that listoftask contains
+     * @throws FileNotFoundException
+     */
     public static int LoadTask(ListOfTask tasks, int count) throws FileNotFoundException {
         FileReader fileReader = new FileReader("data/duke.txt");
         BufferedReader bufferedReader = new BufferedReader(fileReader);
